@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Signin Page</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand">Test App</a>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>                        
+                    </li>
+                </ul>
+                <a href="/signin" class="nav-item active nav-link my-2 my-lg-0">Sign in</a>
+            </nav>
+            <h1>Signin</h1>
+            {% if messages %}
+            {% for message in messages %}
+            <p style="color: red">{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+            <form action="/login" method="post">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Email Address:</span>
+                    </div>
+                    <input name="email" type="text" class="form-control" placeholder="example@example.com">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Password:</span>
+                    </div>
+                    <input name="password" type="password" class="form-control" aria-label="password">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign in</button>
+                </div>
+            </form>
+            <a style="display: block" href="/register">Don't have an account? Register</a>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>User information</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand">Test App</a>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>                        
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/users/edit">Profile</a>
+                    </li>
+                </ul>
+                <a href="/logoff" class="nav-item active nav-link my-2 my-lg-0">Log off</a>
+            </nav>
+            <h1>{{user.first_name}} {{user.last_name}}</h1>
+            <p>Registered on: {{user.created_at}}</p>
+            <p>User ID: #{{user.id}}</p>
+            <p>Email address: {{user.email}}</p>
+            <p>Description: {{user.desc}}</p>
+            <h1>Leave a message for {{user.first_name}}</h1>
+            {% if messages %}
+            {% for redmessage in messages %}
+            <p style="color: red">{{ redmessage }}</p>
+            {% endfor %}
+            {% endif %}
+            <form action="/users/{{user.id}}/add_message" method="post">
+                {% csrf_token %}
+                <textarea class="form-control" name="message" placeholder="Write a message"></textarea>
+                <button style="float: right; margin-top: 10px" class="btn btn-outline-success">Post</button>
+            </form>
+            {% for messag in all_messages %}
+            <div>
+                <p>{{ messag.user_from.first_name }} {{ messag.user_from.last_name }} wrote - {{ messag.created_at }}</p>
+                <p>{{ messag.message }}</p>
+            </div>
+            {% for comment in messag.comments.all %}
+            <div style="margin-left: 20px;">
+                <p>{{comment.user.first_name}} {{comment.user.last_name}} wrote - {{comment.created_at}}</p>
+                <p>{{comment.comment}}</p>
+            </div>
+            {% endfor %}
+            <form style="margin-left: 20px;" action="/users/{{user.id}}/add_comment" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="message" value="{{messag.id}}">
+                <textarea class="form-control" name="comment" placeholder="Write a comment"></textarea>
+                <button style="float: right; margin-top: 10px" class="btn btn-outline-success">Post</button>
+            </form>
+            {% endfor %}
